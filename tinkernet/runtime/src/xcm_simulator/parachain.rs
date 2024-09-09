@@ -421,11 +421,11 @@ type Block = frame_system::mocking::MockBlock<Runtime>;
 #[derive(Encode, Decode, Clone, Eq, PartialEq, TypeInfo, Debug)]
 pub struct FeeCharger;
 
-impl pallet_inv4::fee_handling::MultisigFeeHandler<Runtime> for FeeCharger {
+impl pallet_dao_manager::fee_handling::MultisigFeeHandler<Runtime> for FeeCharger {
     type Pre = ();
 
     fn pre_dispatch(
-        _fee_asset: &pallet_inv4::fee_handling::FeeAsset,
+        _fee_asset: &pallet_dao_manager::fee_handling::FeeAsset,
         _who: &AccountId,
         _call: &RuntimeCall,
         _info: &sp_runtime::traits::DispatchInfoOf<RuntimeCall>,
@@ -435,7 +435,7 @@ impl pallet_inv4::fee_handling::MultisigFeeHandler<Runtime> for FeeCharger {
     }
 
     fn post_dispatch(
-        _fee_asset: &pallet_inv4::fee_handling::FeeAsset,
+        _fee_asset: &pallet_dao_manager::fee_handling::FeeAsset,
         _pre: Option<Self::Pre>,
         _info: &sp_runtime::traits::DispatchInfoOf<RuntimeCall>,
         _post_info: &sp_runtime::traits::PostDispatchInfoOf<RuntimeCall>,
@@ -446,7 +446,7 @@ impl pallet_inv4::fee_handling::MultisigFeeHandler<Runtime> for FeeCharger {
     }
 
     fn handle_creation_fee(
-        _imbalance: pallet_inv4::fee_handling::FeeAssetNegativeImbalance<
+        _imbalance: pallet_dao_manager::fee_handling::FeeAssetNegativeImbalance<
             <Balances as Currency<AccountId>>::NegativeImbalance,
             Credit<AccountId, Tokens>,
         >,
@@ -459,25 +459,25 @@ parameter_types! {
     pub const RelayAssetId: u32 = 1;
 }
 
-impl pallet_inv4::Config for Runtime {
-    type MaxMetadata = crate::inv4::MaxMetadata;
-    type CoreId = crate::common_types::CommonId;
+impl pallet_dao_manager::Config for Runtime {
+    type MaxMetadata = crate::dao_manager::MaxMetadata;
+    type DaoId = crate::common_types::CommonId;
     type RuntimeEvent = RuntimeEvent;
     type Currency = Balances;
     type RuntimeCall = RuntimeCall;
-    type MaxCallers = crate::inv4::MaxCallers;
-    type CoreSeedBalance = crate::inv4::CoreSeedBalance;
+    type MaxCallers = crate::dao_manager::MaxCallers;
+    type DaoSeedBalance = crate::dao_manager::DaoSeedBalance;
     type AssetsProvider = CoreAssets;
     type RuntimeOrigin = RuntimeOrigin;
-    type CoreCreationFee = crate::inv4::CoreCreationFee;
+    type DaoCreationFee = crate::dao_manager::DaoCreationFee;
     type FeeCharger = FeeCharger;
-    type WeightInfo = pallet_inv4::weights::SubstrateWeight<Runtime>;
+    type WeightInfo = pallet_dao_manager::weights::SubstrateWeight<Runtime>;
 
     type Tokens = Tokens;
     type RelayAssetId = RelayAssetId;
-    type RelayCoreCreationFee = crate::inv4::KSMCoreCreationFee;
+    type RelayDaoCreationFee = crate::dao_manager::KSMCoreCreationFee;
 
-    type MaxCallSize = crate::inv4::MaxCallSize;
+    type MaxCallSize = crate::dao_manager::MaxCallSize;
 
     type ParaId = PID;
     type LengthToFee = ConstantMultiplier<Balance, TransactionByteFee>;
@@ -501,12 +501,12 @@ impl orml_tokens2::Config for Runtime {
     type RuntimeEvent = RuntimeEvent;
     type Balance = Balance;
     type Amount = i128;
-    type CurrencyId = <Runtime as pallet_inv4::Config>::CoreId;
+    type CurrencyId = <Runtime as pallet_dao_manager::Config>::DaoId;
     type WeightInfo = ();
-    type ExistentialDeposits = crate::inv4::CoreExistentialDeposits;
+    type ExistentialDeposits = crate::dao_manager::DaoExistentialDeposits;
     type MaxLocks = ConstU32<0u32>;
     type MaxReserves = ConstU32<0u32>;
-    type DustRemovalWhitelist = crate::inv4::CoreDustRemovalWhitelist;
+    type DustRemovalWhitelist = crate::dao_manager::DaoDustRemovalWhitelist;
     type ReserveIdentifier = [u8; 8];
     type CurrencyHooks = ();
 }
@@ -526,7 +526,7 @@ construct_runtime!(
         Balances: pallet_balances,
         MsgQueue: mock_msg_queue,
         PolkadotXcm: pallet_xcm,
-        INV4: pallet_inv4,
+        INV4: pallet_dao_manager,
         Tokens: orml_tokens,
         CoreAssets: orml_tokens2,
         Rings: pallet_rings,

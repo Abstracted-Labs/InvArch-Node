@@ -5,17 +5,18 @@
 //! - [`Pallet`]
 //!
 //! ## Overview
-//! This pallet provides a XCM abstraction layer for INV4 Cores, allowing them to manage assets easily across multiple chains.
+//!
+//! This pallet provides a XCM abstraction layer for DAO Management, allowing them to manage assets easily across multiple chains.
 //!
 //! The module [`traits`] contains traits that provide an abstraction on top of XCM [`MultiLocation`] and has to be correctly implemented in the runtime.
 //!
 //! ## Dispatchable Functions
 //!
 //! - `set_maintenance_status` - Sets the maintenance status of a chain, requires the origin to be authorized as a `MaintenanceOrigin`.
-//! - `send_call` - Allows a core to send a XCM call to a destination chain.
-//! - `transfer_assets` - Allows a core to transfer fungible assets to another account in the destination chain.
-//! - `bridge_assets` - Allows a core to bridge fungible assets to another chain having either a third party account or
-//!    the core account as beneficiary in the destination chain.
+//! - `send_call` - Allows a DAO to send a XCM call to a destination chain.
+//! - `transfer_assets` - Allows a DAO to transfer fungible assets to another account in the destination chain.
+//! - `bridge_assets` - Allows a DAO to bridge fungible assets to another chain having either a third party account or
+//!    the DAO account as beneficiary in the destination chain.
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
@@ -40,7 +41,7 @@ pub mod pallet {
     use super::*;
     use frame_support::pallet_prelude::*;
     use frame_system::pallet_prelude::OriginFor;
-    use pallet_inv4::origin::{ensure_multisig, INV4Origin};
+    use pallet_dao_manager::origin::{ensure_multisig, DaoOrigin};
     use sp_std::{vec, vec::Vec};
     use xcm::{
         v3::{prelude::*, MultiAsset, Weight, WildMultiAsset},
@@ -51,7 +52,9 @@ pub mod pallet {
     pub struct Pallet<T>(_);
 
     #[pallet::config]
-    pub trait Config: frame_system::Config + pallet_inv4::Config + pallet_xcm::Config {
+    pub trait Config:
+        frame_system::Config + pallet_dao_manager::Config + pallet_xcm::Config
+    {
         /// The overarching event type.
         type RuntimeEvent: From<Event<Self>> + IsType<<Self as frame_system::Config>::RuntimeEvent>;
 
@@ -98,7 +101,7 @@ pub mod pallet {
     pub enum Event<T: Config> {
         /// A XCM call was sent.
         CallSent {
-            sender: <T as pallet_inv4::Config>::CoreId,
+            sender: <T as pallet_dao_manager::Config>::DaoId,
             destination: <T as pallet::Config>::Chains,
             call: Vec<u8>,
         },
@@ -108,7 +111,7 @@ pub mod pallet {
             chain: <<<T as pallet::Config>::Chains as ChainList>::ChainAssets as ChainAssetsList>::Chains,
             asset: <<T as pallet::Config>::Chains as ChainList>::ChainAssets,
             amount: u128,
-            from: <T as pallet_inv4::Config>::CoreId,
+            from: <T as pallet_dao_manager::Config>::DaoId,
             to: <T as frame_system::Config>::AccountId,
         },
 
@@ -116,7 +119,7 @@ pub mod pallet {
         AssetsBridged {
             origin_chain_asset: <<T as pallet::Config>::Chains as ChainList>::ChainAssets,
             amount: u128,
-            from: <T as pallet_inv4::Config>::CoreId,
+            from: <T as pallet_dao_manager::Config>::DaoId,
             to: Option<<T as frame_system::Config>::AccountId>,
         },
 
@@ -130,10 +133,10 @@ pub mod pallet {
     #[pallet::call]
     impl<T: Config> Pallet<T>
     where
-        Result<INV4Origin<T>, <T as frame_system::Config>::RuntimeOrigin>:
+        Result<DaoOrigin<T>, <T as frame_system::Config>::RuntimeOrigin>:
             From<<T as frame_system::Config>::RuntimeOrigin>,
 
-        <T as pallet_inv4::Config>::CoreId: Into<u32>,
+        <T as pallet_dao_manager::Config>::DaoId: Into<u32>,
 
         [u8; 32]: From<<T as frame_system::Config>::AccountId>,
         <T as frame_system::Config>::AccountId: From<[u8; 32]>,
@@ -165,7 +168,7 @@ pub mod pallet {
 
         /// Send a XCM call to a destination chain.
         ///
-        /// The origin has to be a core.
+        /// The origin has to be a dao.
         ///
         /// - `destination`: destination chain.
         /// - `weight`: weight of the call.
@@ -184,8 +187,8 @@ pub mod pallet {
             fee: u128,
             call: BoundedVec<u8, T::MaxXCMCallLength>,
         ) -> DispatchResult {
-            let core = ensure_multisig::<T, OriginFor<T>>(origin)?;
-            let core_id = core.id.into();
+            let dao = ensure_multisig::<T, OriginFor<T>>(origin)?;
+            let dao_id = dao.id.into();
 
             let dest = destination.get_location();
 
@@ -195,21 +198,21 @@ pub mod pallet {
             );
 
             let descend_interior = Junction::Plurality {
-                id: BodyId::Index(core_id),
+                id: BodyId::Index(dao_id),
                 part: BodyPart::Voice,
             };
 
             let fee_asset_location = fee_asset.get_asset_location();
 
-            let mut core_multilocation: MultiLocation = MultiLocation {
+            let mut dao_multilocation: MultiLocation = MultiLocation {
                 parents: 1,
                 interior: Junctions::X2(
-                    Junction::Parachain(<T as pallet_inv4::Config>::ParaId::get()),
+                    Junction::Parachain(<T as pallet_dao_manager::Config>::ParaId::get()),
                     descend_interior,
                 ),
             };
 
-            mutate_if_relay(&mut core_multilocation, &dest);
+            mutate_if_relay(&mut dao_multilocation, &dest);
 
             let fee_multiasset = MultiAsset {
                 id: AssetId::Concrete(fee_asset_location),
@@ -230,7 +233,7 @@ pub mod pallet {
                 Instruction::RefundSurplus,
                 Instruction::DepositAsset {
                     assets: MultiAssetFilter::Wild(WildMultiAsset::AllCounted(1)),
-                    beneficiary: core_multilocation,
+                    beneficiary: dao_multilocation,
                 },
             ]);
 
@@ -238,7 +241,7 @@ pub mod pallet {
                 .map_err(|_| Error::<T>::SendingFailed)?;
 
             Self::deposit_event(Event::CallSent {
-                sender: core.id,
+                sender: dao.id,
                 destination,
                 call: call.to_vec(),
             });
@@ -250,7 +253,7 @@ pub mod pallet {
         ///
         /// Both asset and fee_asset have to be in the same chain.
         ///
-        /// The origin has to be a core.
+        /// The origin has to be a dao.
         ///
         /// - `asset`: asset to transfer.
         /// - `amount`: amount to transfer.
@@ -267,8 +270,8 @@ pub mod pallet {
             fee_asset: <<T as pallet::Config>::Chains as ChainList>::ChainAssets,
             fee: u128,
         ) -> DispatchResult {
-            let core = ensure_multisig::<T, OriginFor<T>>(origin)?;
-            let core_id = core.id.into();
+            let dao = ensure_multisig::<T, OriginFor<T>>(origin)?;
+            let dao_id = dao.id.into();
 
             let chain = asset.get_chain();
             let dest = chain.get_location();
@@ -281,7 +284,7 @@ pub mod pallet {
             ensure!(chain == fee_asset.get_chain(), Error::<T>::DifferentChains);
 
             let descend_interior = Junction::Plurality {
-                id: BodyId::Index(core_id),
+                id: BodyId::Index(dao_id),
                 part: BodyPart::Voice,
             };
 
@@ -300,15 +303,15 @@ pub mod pallet {
                 }),
             };
 
-            let mut core_multilocation: MultiLocation = MultiLocation {
+            let mut dao_multilocation: MultiLocation = MultiLocation {
                 parents: 1,
                 interior: Junctions::X2(
-                    Junction::Parachain(<T as pallet_inv4::Config>::ParaId::get()),
+                    Junction::Parachain(<T as pallet_dao_manager::Config>::ParaId::get()),
                     descend_interior,
                 ),
             };
 
-            mutate_if_relay(&mut core_multilocation, &dest);
+            mutate_if_relay(&mut dao_multilocation, &dest);
 
             let fee_multiasset = MultiAsset {
                 id: AssetId::Concrete(fee_asset.get_asset_location()),
@@ -331,7 +334,7 @@ pub mod pallet {
                 Instruction::RefundSurplus,
                 Instruction::DepositAsset {
                     assets: MultiAssetFilter::Wild(WildMultiAsset::AllCounted(1)),
-                    beneficiary: core_multilocation,
+                    beneficiary: dao_multilocation,
                 },
             ]);
 
@@ -342,7 +345,7 @@ pub mod pallet {
                 chain,
                 asset,
                 amount,
-                from: core.id,
+                from: dao.id,
                 to,
             });
 
@@ -351,13 +354,13 @@ pub mod pallet {
 
         /// Bridge fungible assets to another chain.
         ///
-        /// The origin has to be a core.
+        /// The origin has to be a dao.
         ///
         /// - `asset`: asset to bridge and the chain to bridge from.
         /// - `destination`: destination chain.
         /// - `fee`: fee amount.
         /// - `amount`: amount to bridge.
-        /// - `to`: account receiving the asset, None defaults to core account.
+        /// - `to`: account receiving the asset, None defaults to dao account.
         #[pallet::call_index(3)]
         #[pallet::weight(<T as Config>::WeightInfo::bridge_assets())]
         pub fn bridge_assets(
@@ -368,9 +371,9 @@ pub mod pallet {
             amount: u128,
             to: Option<<T as frame_system::Config>::AccountId>,
         ) -> DispatchResult {
-            let core = ensure_multisig::<T, OriginFor<T>>(origin)?;
+            let dao = ensure_multisig::<T, OriginFor<T>>(origin)?;
 
-            let core_id = core.id.into();
+            let dao_id = dao.id.into();
 
             let from_chain = asset.get_chain();
             let from_chain_location = from_chain.get_location();
@@ -384,7 +387,7 @@ pub mod pallet {
             );
 
             let descend_interior = Junction::Plurality {
-                id: BodyId::Index(core_id),
+                id: BodyId::Index(dao_id),
                 part: BodyPart::Voice,
             };
 
@@ -424,10 +427,10 @@ pub mod pallet {
                 })
                 .map_err(|_| Error::<T>::FailedToReanchorAsset)?;
 
-            let mut core_multilocation: MultiLocation = MultiLocation {
+            let mut dao_multilocation: MultiLocation = MultiLocation {
                 parents: 1,
                 interior: Junctions::X2(
-                    Junction::Parachain(<T as pallet_inv4::Config>::ParaId::get()),
+                    Junction::Parachain(<T as pallet_dao_manager::Config>::ParaId::get()),
                     descend_interior,
                 ),
             };
@@ -441,21 +444,21 @@ pub mod pallet {
                     }),
                 },
                 None => {
-                    let mut dest_core_multilocation = core_multilocation;
+                    let mut dest_dao_multilocation = dao_multilocation;
 
-                    mutate_if_relay(&mut dest_core_multilocation, &dest);
+                    mutate_if_relay(&mut dest_dao_multilocation, &dest);
 
-                    dest_core_multilocation
+                    dest_dao_multilocation
                 }
             };
 
-            mutate_if_relay(&mut core_multilocation, &dest);
+            mutate_if_relay(&mut dao_multilocation, &dest);
 
             // If the asset originates from the destination chain, we need to reverse the reserve-transfer.
             let message = if asset_location.starts_with(&dest) {
                 Xcm(vec![
                     WithdrawAsset(vec![fee_multiasset.clone(), multiasset.clone()].into()),
-                    // Core pays for the execution fee incurred on sending the XCM.
+                    // DAO pays for the execution fee incurred on sending the XCM.
                     Instruction::BuyExecution {
                         fees: fee_multiasset,
                         weight_limit: WeightLimit::Unlimited,
@@ -482,10 +485,10 @@ pub mod pallet {
                         ]),
                     },
                     Instruction::RefundSurplus,
-                    // Refunds the core the surplus of the execution fees incurred on sending the XCM.
+                    // Refunds the dao the surplus of the execution fees incurred on sending the XCM.
                     Instruction::DepositAsset {
                         assets: AllCounted(1).into(),
-                        beneficiary: core_multilocation,
+                        beneficiary: dao_multilocation,
                     },
                 ])
             } else {
@@ -515,7 +518,7 @@ pub mod pallet {
                     Instruction::RefundSurplus,
                     Instruction::DepositAsset {
                         assets: MultiAssetFilter::Wild(WildMultiAsset::AllCounted(1)),
-                        beneficiary: core_multilocation,
+                        beneficiary: dao_multilocation,
                     },
                 ])
             };
@@ -525,7 +528,7 @@ pub mod pallet {
 
             Self::deposit_event(Event::AssetsBridged {
                 origin_chain_asset: asset,
-                from: core.id,
+                from: dao.id,
                 amount,
                 to,
             });

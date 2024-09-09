@@ -24,8 +24,8 @@ smallvec = { workspace = true }
 new-modified-construct-runtime = { workspace = true }
 
 # InvArch
-pallet-inv4 = { workspace = true }
-pallet-ocif-staking = { workspace = true }
+pallet-dao-manager = { workspace = true }
+pallet-dao-staking = { workspace = true }
 pallet-checked-inflation = { workspace = true }
 
 # Substrate
@@ -159,8 +159,8 @@ std = [
 	"new-modified-construct-runtime/std",
 
 	"pallet-checked-inflation/std",
-	"pallet-inv4/std",
-	"pallet-ocif-staking/std"
+	"pallet-dao-manager/std",
+	"pallet-dao-staking/std"
 ]
 
 runtime-benchmarks = [

@@ -15,7 +15,7 @@ use frame_support::{
 use frame_system::EnsureRoot;
 use orml_asset_registry::AssetMetadata;
 use pallet_balances::AccountData;
-use pallet_inv4::fee_handling::*;
+use pallet_dao_manager::fee_handling::*;
 use scale_info::TypeInfo;
 use sp_core::H256;
 use sp_runtime::{traits::IdentityLookup, AccountId32, BuildStorage};
@@ -57,7 +57,7 @@ frame_support::construct_runtime!(
         Tokens: orml_tokens,
         CoreAssets: orml_tokens2,
         AssetRegistry: orml_asset_registry,
-        INV4: pallet_inv4,
+        dao_manager: pallet_dao_manager,
         Rings: pallet,
         XcmPallet: pallet_xcm,
     }
@@ -228,29 +228,33 @@ impl pallet_xcm::Config for Test {
 const UNIT: u128 = 1000000000000;
 
 orml_traits2::parameter_type_with_key! {
-    pub CoreExistentialDeposits: |_currency_id: <Test as pallet_inv4::Config>::CoreId| -> Balance {
+    pub DaoExistentialDeposits: |_currency_id: <Test as pallet_dao_manager::Config>::DaoId| -> Balance {
         1u128
     };
 }
 
-pub struct CoreDustRemovalWhitelist;
-impl Contains<AccountId> for CoreDustRemovalWhitelist {
+pub struct DaoDustRemovalWhitelist;
+impl Contains<AccountId> for DaoDustRemovalWhitelist {
     fn contains(_: &AccountId) -> bool {
         true
     }
 }
 
 pub struct DisallowIfFrozen;
-impl orml_traits2::currency::OnTransfer<AccountId, <Test as pallet_inv4::Config>::CoreId, Balance>
-    for DisallowIfFrozen
+impl
+    orml_traits2::currency::OnTransfer<
+        AccountId,
+        <Test as pallet_dao_manager::Config>::DaoId,
+        Balance,
+    > for DisallowIfFrozen
 {
     fn on_transfer(
-        currency_id: <Test as pallet_inv4::Config>::CoreId,
+        currency_id: <Test as pallet_dao_manager::Config>::DaoId,
         _from: &AccountId,
         _to: &AccountId,
         _amount: Balance,
     ) -> sp_runtime::DispatchResult {
-        if let Some(true) = INV4::is_asset_frozen(currency_id) {
+        if let Some(true) = dao_manager::is_asset_frozen(currency_id) {
             Err(sp_runtime::DispatchError::Token(
                 sp_runtime::TokenError::Frozen,
             ))
@@ -261,27 +265,30 @@ impl orml_traits2::currency::OnTransfer<AccountId, <Test as pallet_inv4::Config>
 }
 
 pub struct HandleNewMembers;
-impl orml_traits2::Happened<(AccountId, <Test as pallet_inv4::Config>::CoreId)>
+impl orml_traits2::Happened<(AccountId, <Test as pallet_dao_manager::Config>::DaoId)>
     for HandleNewMembers
 {
-    fn happened((member, core_id): &(AccountId, <Test as pallet_inv4::Config>::CoreId)) {
-        INV4::add_member(core_id, member)
+    fn happened((member, dao_id): &(AccountId, <Test as pallet_dao_manager::Config>::DaoId)) {
+        dao_manager::add_member(dao_id, member)
     }
 }
 
 pub struct HandleRemovedMembers;
-impl orml_traits2::Happened<(AccountId, <Test as pallet_inv4::Config>::CoreId)>
+impl orml_traits2::Happened<(AccountId, <Test as pallet_dao_manager::Config>::DaoId)>
     for HandleRemovedMembers
 {
-    fn happened((member, core_id): &(AccountId, <Test as pallet_inv4::Config>::CoreId)) {
-        INV4::remove_member(core_id, member)
+    fn happened((member, dao_id): &(AccountId, <Test as pallet_dao_manager::Config>::DaoId)) {
+        dao_manager::remove_member(dao_id, member)
     }
 }
 
 pub struct INV4TokenHooks;
 impl
-    orml_traits2::currency::MutationHooks<AccountId, <Test as pallet_inv4::Config>::CoreId, Balance>
-    for INV4TokenHooks
+    orml_traits2::currency::MutationHooks<
+        AccountId,
+        <Test as pallet_dao_manager::Config>::DaoId,
+        Balance,
+    > for INV4TokenHooks
 {
     type PreTransfer = DisallowIfFrozen;
     type OnDust = ();
@@ -297,12 +304,12 @@ impl orml_tokens2::Config for Test {
     type RuntimeEvent = RuntimeEvent;
     type Balance = Balance;
     type Amount = i128;
-    type CurrencyId = <Test as pallet_inv4::Config>::CoreId;
+    type CurrencyId = <Test as pallet_dao_manager::Config>::DaoId;
     type WeightInfo = ();
-    type ExistentialDeposits = CoreExistentialDeposits;
+    type ExistentialDeposits = DaoExistentialDeposits;
     type MaxLocks = ConstU32<0u32>;
     type MaxReserves = ConstU32<0u32>;
-    type DustRemovalWhitelist = CoreDustRemovalWhitelist;
+    type DustRemovalWhitelist = DaoDustRemovalWhitelist;
     type ReserveIdentifier = [u8; 8];
     type CurrencyHooks = INV4TokenHooks;
 }
@@ -310,10 +317,10 @@ impl orml_tokens2::Config for Test {
 parameter_types! {
     pub const MaxMetadata: u32 = 10000;
     pub const MaxCallers: u32 = 10000;
-    pub const CoreSeedBalance: Balance = 1000000u128;
-    pub const CoreCreationFee: Balance = UNIT;
+    pub const DaoSeedBalance: Balance = 1000000u128;
+    pub const DaoCreationFee: Balance = UNIT;
     pub const StringLimit: u32 = 2125;
-    pub const RelayCoreCreationFee: Balance = UNIT;
+    pub const RelayDaoCreationFee: Balance = UNIT;
 }
 
 pub type AssetId = u32;
@@ -439,23 +446,23 @@ impl MultisigFeeHandler<Test> for FeeCharger {
     }
 }
 
-impl pallet_inv4::Config for Test {
+impl pallet_dao_manager::Config for Test {
     type MaxMetadata = MaxMetadata;
-    type CoreId = u32;
+    type DaoId = u32;
     type RuntimeEvent = RuntimeEvent;
     type Currency = Balances;
     type RuntimeCall = RuntimeCall;
     type MaxCallers = MaxCallers;
-    type CoreSeedBalance = CoreSeedBalance;
+    type DaoSeedBalance = DaoSeedBalance;
     type AssetsProvider = CoreAssets;
     type RuntimeOrigin = RuntimeOrigin;
-    type CoreCreationFee = CoreCreationFee;
+    type DaoCreationFee = DaoCreationFee;
     type FeeCharger = FeeCharger;
-    type WeightInfo = pallet_inv4::weights::SubstrateWeight<Test>;
+    type WeightInfo = pallet_dao_manager::weights::SubstrateWeight<Test>;
 
     type Tokens = Tokens;
     type RelayAssetId = RelayAssetId;
-    type RelayCoreCreationFee = RelayCoreCreationFee;
+    type RelayDaoCreationFee = RelayDaoCreationFee;
     type MaxCallSize = ConstU32<51200>;
 
     type ParaId = ConstU32<2125>;
@@ -465,7 +472,7 @@ impl pallet_inv4::Config for Test {
 parameter_types! {
     pub ParaId: u32 = 2125u32;
     pub MaxWeightedLength: u32 = 100_000;
-    pub INV4PalletIndex: u8 = 2u8;
+    pub DaoPalletIndex: u8 = 2u8;
 }
 
 impl pallet::Config for Test {

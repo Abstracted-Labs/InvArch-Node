@@ -3,57 +3,57 @@
 use frame_support::{traits::OnRuntimeUpgrade, weights::Weight};
 use log::{info, warn};
 
-pub mod new_core_account_derivation {
+pub mod new_dao_account_derivation {
     use super::*;
     use crate::{common_types::CommonId, AccountId, Identity, Runtime, RuntimeOrigin, Vec};
     use frame_support::dispatch::GetDispatchInfo;
-    use pallet_inv4::{
-        account_derivation::CoreAccountDerivation, CoreInfoOf, Pallet as INV4Pallet,
+    use pallet_dao_manager::{
+        account_derivation::DaoAccountDerivation, DaoInfoOf, Pallet as DaoPallet,
     };
     use sp_std::boxed::Box;
 
     fn get_old_accounts() -> Vec<(AccountId, CommonId)> {
-        pallet_inv4::CoreByAccount::<Runtime>::iter().collect()
+        pallet_dao_manager::CoreByAccount::<Runtime>::iter().collect()
     }
 
-    fn migrate_inv4_storages(old_accounts: Vec<(AccountId, CommonId)>) {
-        old_accounts.iter().for_each(|(old_acc, core_id)| {
+    fn migrate_dao_storages(old_accounts: Vec<(AccountId, CommonId)>) {
+        old_accounts.iter().for_each(|(old_acc, dao_id)| {
             let new_account =
-                <INV4Pallet<Runtime> as CoreAccountDerivation<Runtime>>::derive_core_account(
-                    *core_id,
+                <DaoPallet<Runtime> as DaoAccountDerivation<Runtime>>::derive_dao_account(
+                    *dao_id,
                 );
 
-            pallet_inv4::CoreByAccount::<Runtime>::swap(old_acc, new_account);
+            pallet_dao_manager::CoreByAccount::<Runtime>::swap(old_acc, new_account);
         });
 
-        pallet_inv4::CoreStorage::<Runtime>::translate(
-            |core_id, core_data: CoreInfoOf<Runtime>| {
-                let mut new_core = core_data;
+        pallet_dao_manager::CoreStorage::<Runtime>::translate(
+            |dao_id, dao_data: DaoInfoOf<Runtime>| {
+                let mut new_dao = dao_data;
 
-                new_core.account =
-                    <INV4Pallet<Runtime> as CoreAccountDerivation<Runtime>>::derive_core_account(
-                        core_id,
+                new_dao.account =
+                    <DaoPallet<Runtime> as DaoAccountDerivation<Runtime>>::derive_dao_account(
+                        dao_id,
                     );
 
-                Some(new_core)
+                Some(new_dao)
             },
         );
     }
 
     fn migrate_staking_storages(old_accounts: Vec<(AccountId, CommonId)>) {
-        old_accounts.iter().for_each(|(old_acc, this_core_id)| {
+        old_accounts.iter().for_each(|(old_acc, this_dao_id)| {
             let new_account =
-                <INV4Pallet<Runtime> as CoreAccountDerivation<Runtime>>::derive_core_account(
-                    *this_core_id,
+                <DaoPallet<Runtime> as DaoAccountDerivation<Runtime>>::derive_dao_account(
+                    *this_dao_id,
                 );
 
-            pallet_ocif_staking::pallet::Ledger::<Runtime>::swap(old_acc, new_account.clone());
+            pallet_dao_staking::pallet::Ledger::<Runtime>::swap(old_acc, new_account.clone());
 
-            pallet_inv4::CoreStorage::<Runtime>::iter_keys().for_each(|staking_core_id| {
-                pallet_ocif_staking::pallet::GeneralStakerInfo::<Runtime>::swap(
-                    staking_core_id,
+            pallet_dao_manager::CoreStorage::<Runtime>::iter_keys().for_each(|staking_dao_id| {
+                pallet_dao_staking::pallet::GeneralStakerInfo::<Runtime>::swap(
+                    staking_dao_id,
                     old_acc,
-                    staking_core_id,
+                    staking_dao_id,
                     new_account.clone(),
                 );
             });
@@ -61,10 +61,10 @@ pub mod new_core_account_derivation {
     }
 
     fn migrate_balances_storages(old_accounts: Vec<(AccountId, CommonId)>) {
-        old_accounts.iter().for_each(|(old_acc, this_core_id)| {
+        old_accounts.iter().for_each(|(old_acc, this_dao_id)| {
             let new_account =
-                <INV4Pallet<Runtime> as CoreAccountDerivation<Runtime>>::derive_core_account(
-                    *this_core_id,
+                <DaoPallet<Runtime> as DaoAccountDerivation<Runtime>>::derive_dao_account(
+                    *this_dao_id,
                 );
 
             pallet_balances::Account::<Runtime>::swap(old_acc, new_account.clone());
@@ -91,10 +91,10 @@ pub mod new_core_account_derivation {
     )> {
         old_accounts
             .iter()
-            .map(|(old_acc, this_core_id)| {
+            .map(|(old_acc, this_dao_id)| {
                 let new_account =
-                    <INV4Pallet<Runtime> as CoreAccountDerivation<Runtime>>::derive_core_account(
-                        *this_core_id,
+                    <DaoPallet<Runtime> as DaoAccountDerivation<Runtime>>::derive_dao_account(
+                        *this_dao_id,
                     );
 
                 let maybe_identity = Identity::identity(old_acc);
@@ -168,16 +168,16 @@ pub mod new_core_account_derivation {
 
                 if let Some((acc, id)) = old_accounts.first() {
                     let new_acc =
-                <INV4Pallet<Runtime> as CoreAccountDerivation<Runtime>>::derive_core_account(
-                    *id,
-                );
+                        <DaoPallet<Runtime> as DaoAccountDerivation<Runtime>>::derive_dao_account(
+                            *id,
+                        );
 
                     if *acc != new_acc {
                         weight.saturating_accrue(
                             <Runtime as frame_system::Config>::DbWeight::get().reads_writes(2, 2)
                                 * old_accounts_len,
                         );
-                        migrate_inv4_storages(old_accounts.clone());
+                        migrate_dao_storages(old_accounts.clone());
 
                         weight.saturating_accrue(
                             <Runtime as frame_system::Config>::DbWeight::get().reads_writes(3, 2)

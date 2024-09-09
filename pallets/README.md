@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://github.com/InvArch/InvArch-Frames/blob/56560bb81d4678d6e2e6a00cf3b79ab79cf42cbd/logo_colored.svg?raw=true" width="175" height="175" />
+<img src="https://github.com/Abstracted-Labs/InvArch/blob/56560bb81d4678d6e2e6a00cf3b79ab79cf42cbd/logo_colored.svg?raw=true" width="175" height="175" />
 </div>
 
 <div align="Center">
@@ -13,8 +13,8 @@
 <br />
 [![Polkadot SDK version](https://img.shields.io/badge/Polkadot_SDK-V1.6.0-E6007A?logo=polkadot)](https://github.com/paritytech/polkadot-sdk/releases/tag/polkadot-v1.6.0)
 [![Medium](https://img.shields.io/badge/Medium-InvArch-E6007A?logo=medium)](https://invarch.medium.com/)
-[![License](https://img.shields.io/github/license/InvArch/InvArch?color=E6007A)](https://github.com/InvArch/InvArch/blob/main/LICENSE)
-[![Library Docs](https://img.shields.io/badge/Library-Docs%2Ers-E6007A?logo=docsdotrs)](https://invarch.github.io/InvArch-Frames/)
+[![License](https://img.shields.io/github/license/InvArch/InvArch?color=E6007A)](https://github.com/Abstracted-Labs/InvArch/blob/main/LICENSE)
+[![Library Docs](https://img.shields.io/badge/Library-Docs%2Ers-E6007A?logo=docsdotrs)](https://abstracted-labs.github.io/InvArch/)
 
 </div>  
 
@@ -36,28 +36,29 @@ Currently, InvArch features a multichain multisignature solution & DAO staking p
 
 # Pallet Library
 
- ## [INV4](./INV4/pallet-inv4/)
- - The INV4 pallet is designed to manage advanced virtual multisigs, internally referred to as cores.
-    - [`Docs.rs`](https://invarch.github.io/InvArch-Frames/pallet_inv4/index.html)
+ ## [DAO Manager](./pallet-dao-manager/)
+ - The DAO Manager pallet is designed to manage advanced virtual multisigs (DAOs), OLD: internally referred to as cores.
+    - [`Docs.rs`](https://abstracted-labs.github.io/InvArch/pallet_dao_manager/index.html)
  - Articles:
-    - [`The Saturn SDK.`](https://invarch.medium.com/the-saturn-sdk-c46b4e40f46e)
-    - [`The INV4 Protocol: The Core of the Creator Economy.`](https://invarch.medium.com/the-inv4-protocol-the-core-of-the-creator-economy-1af59fdbc943)
-    - [`🪐 Saturn: The Future of Multi-Party Ownership.`](https://invarch.medium.com/saturn-the-future-of-multi-party-ownership-ac7190f86a7b)
+    - [`The SDK. (Old)`](https://invarch.medium.com/the-saturn-sdk-c46b4e40f46e)
+    - [`The DAO Manager Protocol: The Core of the Creator Economy. (Old)`](https://invarch.medium.com/the-inv4-protocol-the-core-of-the-creator-economy-1af59fdbc943)
+    - [`The Future of Multi-Party Ownership. (Old)`](https://invarch.medium.com/saturn-the-future-of-multi-party-ownership-ac7190f86a7b)
   
- ## [OCIF](./OCIF/staking/)
- - The OCIF Staking Pallet is a pallet designed to facilitate staking towards INV-Cores within a blockchain network.
-    - [`Docs.rs`](https://invarch.github.io/InvArch-Frames/pallet_ocif_staking/index.html)
+ ## [DAO Staking](./pallet-dao-staking)
+ - Previously known as OCIF Staking.
+ - The DAO Staking Staking Pallet is a pallet designed to facilitate staking towards DAOs within a blockchain network.
+    - [`Docs.rs`](https://abstracted-labs.github.io/InvArch/pallet_dao_staking/index.html)
  - Articles:
-    - [`The OCIF Protocol: Permissionless Funding for DAOs & Creators.`](https://invarch.medium.com/the-ocif-protocol-permissionless-funding-for-daos-creators-505aa18098f1)
+    - [`The DAO Staking Protocol: Permissionless Funding for DAOs & Creators.`](https://invarch.medium.com/the-ocif-protocol-permissionless-funding-for-daos-creators-505aa18098f1)
  - DAO Staking is live on [InvArch](https://portal.invarch.network/staking) and [Tinkernet](https://www.tinker.network/staking).
 
  ## [Rings](./pallet-rings)
- - The Rings pallet provides a cross-consensus message (XCM) abstraction layer for INV4 Cores.
-    - [`Docs.rs`](https://invarch.github.io/InvArch-Frames/pallet_rings/index.html)
+ - The Rings pallet provides a cross-consensus message (XCM) abstraction layer for DAO Manager.
+    - [`Docs.rs`](https://abstracted-labs.github.io/InvArch/pallet_rings/index.html)
 
  ## [Checked Inflation](./pallet-checked-inflation)
  - The Checked Inflation pallet is designed to facilitate the inflationary aspect of a blockchain's economy.
-    - [`Docs.rs`](https://invarch.github.io/InvArch-Frames/pallet_checked_inflation/index.html)
+    - [`Docs.rs`](https://abstracted-labs.github.io/InvArch/pallet_checked_inflation/index.html)
 
 ---
 
@@ -69,7 +70,7 @@ If you haven't already, come find us on the [#InvArch Discord](https://discord.g
 
 ### Submitting changes
 
-Please send a [GitHub Pull Request to InvArch](https://github.com/InvArch/InvArch/pull/new/master) with a clear list of what you've done (read more about [pull requests](http://help.github.com/pull-requests/)). Please make sure all of your commits are atomic (one feature per commit).
+Please send a [GitHub Pull Request to InvArch](https://github.com/Abstracted-Labs/InvArch/pull/new) with a clear list of what you've done (read more about [pull requests](http://help.github.com/pull-requests/)). Please make sure all of your commits are atomic (one feature per commit).
 
 Always write a clear log message for your commits. One-line messages are fine for small changes, but bigger changes should look like this:
 
@@ -82,4 +83,4 @@ Please make sure to update tests as appropriate.
 
 ### License
 
-[GPLv3.0](https://github.com/InvArch/InvArch/blob/main/LICENSE)
+[GPLv3.0](https://github.com/Abstracted-Labs/InvArch/blob/main/LICENSE)

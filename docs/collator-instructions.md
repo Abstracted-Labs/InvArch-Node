@@ -13,7 +13,7 @@ You can either install the InvArch node using a pre-built binary from GitHub, or
 
 Download the pre-built binary to `/usr/local/bin` and give it the necessary permissions & ownership:
 ```shell
-sudo wget -O /usr/local/bin/tinkernet-collator https://github.com/InvArch/InvArch-Node/releases/latest/download/invarch-collator
+sudo wget -O /usr/local/bin/tinkernet-collator https://github.com/Abstracted-Labs/InvArch/releases/latest/download/invarch-collator
 sudo chmod +x /usr/local/bin/tinkernet-collator
 sudo chown tinkernet-collator:tinkernet-collator /usr/local/bin/tinkernet-collator
 ```
@@ -35,15 +35,15 @@ sudo apt -y install cmake git clang libclang-dev
 Clone the repo:
 
  ```shell
- git clone git@github.com:InvArch/InvArch-Node.git
+ git clone git@github.com:Abstracted-Labs/InvArch.git
  ```
 
-Make sure you can see the "InvArch-Node" folder using `ls -la`. If not then you likely did something wrong.
+Make sure you can see the "InvArch" folder using `ls -la`. If not then you likely did something wrong.
 
-Enter the repo and check out the most recent tagged release of code (https://github.com/InvArch/InvArch-Node/releases)
+Enter the repo and check out the most recent tagged release of code (https://github.com/Abstracted-Labs/InvArch/releases)
 
 ```shell
-cd InvArch-Node
+cd InvArch
 git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
 ```
 
@@ -54,7 +54,7 @@ cargo build --release --features tinkernet
 
 Move the node executable to `usr/local/bin`, make it executable, and change ownership to our `tinkernet-collator` service user:
 ```shell
-sudo mv ~/InvArch-Node/target/release/invarch-collator /usr/local/bin/tinkernet-collator
+sudo mv ~/InvArch/target/release/invarch-collator /usr/local/bin/tinkernet-collator
 sudo chmod +x /usr/local/bin/tinkernet-collator
 sudo chown tinkernet-collator:tinkernet-collator /usr/local/bin/tinkernet-collator
 ```
@@ -66,7 +66,7 @@ Now that you've got a collator node executable at `/usr/local/bin/tinkernet-coll
 Download the chainspec (`tinker-raw.json`), set up the `tinkernet` data directory, and give it the necessary ownership:
 ```shell
 sudo mkdir /var/lib/tinkernet
-sudo wget -O /var/lib/tinkernet/tinker-raw.json https://github.com/InvArch/InvArch-Node/releases/latest/download/tinker-raw.json
+sudo wget -O /var/lib/tinkernet/tinker-raw.json https://github.com/Abstracted-Labs/InvArch/releases/latest/download/tinker-raw.json
 sudo chown -R tinkernet-collator:tinkernet-collator /var/lib/tinkernet
 ```
 
@@ -214,9 +214,9 @@ As a collator node operator, you should also set up monitoring for your node, in
 Once there are new releases, a quick process to update your node is:
 ```
 sudo systemctl stop tinkernet-collator
-sudo wget -O /var/lib/tinkernet/tinker-raw.json https://github.com/InvArch/InvArch-Node/releases/latest/download/tinker-raw.json
+sudo wget -O /var/lib/tinkernet/tinker-raw.json https://github.com/Abstracted-Labs/InvArch/releases/latest/download/tinker-raw.json
 sudo chown tinkernet-collator:tinkernet-collator /var/lib/tinkernet/tinker-raw.json
-sudo wget -O /usr/local/bin/invarch-collator https://github.com/InvArch/InvArch-Node/releases/latest/download/invarch-collator
+sudo wget -O /usr/local/bin/invarch-collator https://github.com/Abstracted-Labs/InvArch/releases/latest/download/invarch-collator
 sudo chmod +x /usr/local/bin/invarch-collator
 sudo chown tinkernet-collator:tinkernet-collator /usr/local/bin/invarch-collator
 sudo systemctl start tinkernet-collator

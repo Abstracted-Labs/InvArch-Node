@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://github.com/InvArch/Brand-Assets/blob/main/branding/png/brand_colored_text_white.png">
+<img src="https://github.com/Abstracted-Labs/Brand-Assets/blob/main/branding/png/brand_colored_text_white.png">
 </div>
 
 <div align="Center">
@@ -10,7 +10,7 @@ Built using [Rust](https://github.com/rust-lang/rust) & the [Polkadot SDK](https
 <br>
 [![Substrate version](https://img.shields.io/badge/Substrate-v3.0.0-E6007A?logo=Parity%20Substrate)](https://github.com/paritytech/substrate/releases/tag/v3.0.0)
 [![Medium](https://img.shields.io/badge/Medium-InvArch-E6007A?logo=medium)](https://invarch.medium.com/)
-[![License](https://img.shields.io/github/license/InvArch/InvArch?color=E6007A)](https://github.com/InvArch/InvArch/blob/main/LICENSE)<br>
+[![License](https://img.shields.io/github/license/InvArch/InvArch?color=E6007A)](https://github.com/Abstracted-Labs/InvArch/blob/main/LICENSE)<br>
 </div>
 
 <!-- TOC -->
@@ -36,7 +36,7 @@ people to collaborate, share ownership, & function as multichain organizations!<
 
 ## How to Contribute Code
 
-Please send a [GitHub Pull Request to InvArch](https://github.com/InvArch/InvArch/pull/new/master) with a clear list of what you've done (read more about [pull requests](http://help.github.com/pull-requests/)) & ensure all your commits are atomic (one feature per commit). Always write a clear log message for your commits. One-line messages are fine for small changes, but bigger changes should look like this:<br>
+Please send a [GitHub Pull Request to InvArch](https://github.com/Abstracted-Labs/InvArch/pull/new) with a clear list of what you've done (read more about [pull requests](http://help.github.com/pull-requests/)) & ensure all your commits are atomic (one feature per commit). Always write a clear log message for your commits. One-line messages are fine for small changes, but bigger changes should look like this:<br>
 
     $ git commit -m "A summary of the commit."
     > 
@@ -54,5 +54,5 @@ If you haven't already, join the community in InvArch [Discord](https://discord.
 
 ### License
 
-• [GPL](https://github.com/InvArch/InvArch/blob/main/LICENSE)<br>
+• [GPL](https://github.com/Abstracted-Labs/InvArch/blob/main/LICENSE)<br>
 

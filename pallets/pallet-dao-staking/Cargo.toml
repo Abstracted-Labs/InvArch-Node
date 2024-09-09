@@ -1,0 +1,77 @@
+[package]
+name = 'pallet-dao-staking'
+description = 'FRAME pallet for DAO staking'
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+version.workspace = true
+
+[package.metadata.docs.rs]
+targets = ["x86_64-unknown-linux-gnu"]
+
+[dependencies]
+codec = { workspace = true }
+scale-info = { workspace = true }
+serde = { workspace = true, optional = true }
+
+frame-support = { workspace = true }
+frame-system = { workspace = true }
+num-traits = { workspace = true }
+pallet-balances = { workspace = true, optional = true }
+pallet-message-queue = { workspace = true }
+pallet-session = { workspace = true }
+pallet-timestamp = { workspace = true, optional = true }
+sp-arithmetic = { workspace = true }
+sp-core = { workspace = true }
+sp-io = { workspace = true }
+sp-runtime = { workspace = true }
+sp-staking = { workspace = true }
+sp-std = { workspace = true }
+
+pallet-dao-manager = { workspace = true }
+
+frame-benchmarking = { workspace = true, optional = true }
+cumulus-primitives-core = { workspace = true }
+
+[dev-dependencies]
+orml-traits = { workspace = true }
+orml-tokens = { workspace = true }
+xcm = { workspace = true }
+
+[features]
+default = ["std"]
+std = [
+    "serde",
+    "codec/std",
+    "scale-info/std",
+    "num-traits/std",
+    "cumulus-primitives-core/std",
+    "sp-core/std",
+    "sp-runtime/std",
+    "sp-arithmetic/std",
+    "sp-io/std",
+    "sp-std/std",
+    "frame-support/std",
+    "frame-system/std",
+    "frame-benchmarking?/std",
+    "xcm/std",
+    "pallet-balances/std",
+    "pallet-message-queue/std",
+    "pallet-session/std",
+    "pallet-timestamp/std",
+    "pallet-dao-manager/std",
+    "sp-staking/std",
+    "orml-traits/std",
+    "orml-tokens/std",
+]
+runtime-benchmarks = [
+    "frame-benchmarking/runtime-benchmarks",
+    "sp-runtime/runtime-benchmarks",
+    "frame-system/runtime-benchmarks",
+    "pallet-dao-manager/runtime-benchmarks",
+    "pallet-message-queue/runtime-benchmarks",
+
+]
+try-runtime = ["frame-support/try-runtime"]

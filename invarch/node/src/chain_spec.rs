@@ -1,4 +1,4 @@
-// Copyright 2021-2022 InvArch Association.
+// Copyright 2021-2024 Abstracted Labs.
 // This file is part of InvArch.
 
 // InvArch is free software: you can redistribute it and/or modify

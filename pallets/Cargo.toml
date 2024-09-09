@@ -1,13 +1,29 @@
 [workspace]
 resolver = "2"
 members = [
-    "INV4/pallet-inv4",
-    "OCIF/staking",
+    "pallet-dao-manager",
+    "pallet-dao-staking",
     "pallet-checked-inflation",
     "pallet-rings",
 ]
 
+[workspace.package]
+authors = ["Abstracted Labs <https://github.com/Abstracted-Labs>"]
+edition = "2021"
+homepage = "https://invarch.network"
+license = "GPL-3.0"
+repository = "https://github.com/Abstracted-Labs/InvArch/"
+version = '0.1.0-dev'
+
+
 [workspace.dependencies]
+
+pallet-dao-manager = { path = "./pallet-dao-manager", default-features = false }
+pallet-dao-staking = { path = "./pallet-dao-staking", default-features = false }
+pallet-checked-inflation = { path = "./pallet-checked-inflation", default-features = false }
+pallet-rings = { path = "./pallet-rings", default-features = false }
+primitives = { path = "./primitives", package = "invarch-primitives", default-features = false }
+
 
 # crates.io dependencies
 codec = { package = "parity-scale-codec", version = "3.6.5", features = [
@@ -46,12 +62,12 @@ xcm-executor = { package = "staging-xcm-executor", git = "https://github.com/par
 
 cumulus-primitives-core = { git = "https://github.com/paritytech/polkadot-sdk.git", branch = "release-polkadot-v1.6.0", default-features = false }
 
-orml-asset-registry = { git = "https://github.com/InvArch/open-runtime-module-library.git", default-features = false, branch = "polkadot-v1.6.0" }
+orml-asset-registry = { git = "https://github.com/Abstracted-Labs/open-runtime-module-library.git", default-features = false, branch = "polkadot-v1.6.0" }
 orml-tokens2 = { package = "orml-tokens", git = "https://github.com/arrudagates/open-runtime-module-library.git", default-features = false, rev = "bc6b41e8a9539971a2da5d62cf8f550cde985f00" }
 orml-traits2 = { package = "orml-traits", git = "https://github.com/arrudagates/open-runtime-module-library.git", default-features = false, rev = "bc6b41e8a9539971a2da5d62cf8f550cde985f00" }
 
-orml-tokens = { package = "orml-tokens", git = "https://github.com/InvArch/open-runtime-module-library.git", default-features = false, branch = "polkadot-v1.6.0" }
-orml-traits = { package = "orml-traits", git = "https://github.com/InvArch/open-runtime-module-library.git", default-features = false, branch = "polkadot-v1.6.0" }
+orml-tokens = { package = "orml-tokens", git = "https://github.com/Abstracted-Labs/open-runtime-module-library.git", default-features = false, branch = "polkadot-v1.6.0" }
+orml-traits = { package = "orml-traits", git = "https://github.com/Abstracted-Labs/open-runtime-module-library.git", default-features = false, branch = "polkadot-v1.6.0" }
 
 # orml-asset-registry = { git = "https://github.com/open-web3-stack/open-runtime-module-library", default-features = false, rev = "7ecebeab7e3dbc2226ed58d32ee159271a8176ae" }
 # orml-tokens = { git = "https://github.com/open-web3-stack/open-runtime-module-library", default-features = false, rev = "7ecebeab7e3dbc2226ed58d32ee159271a8176ae" }

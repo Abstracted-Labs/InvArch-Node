@@ -37,13 +37,13 @@ pub enum BoolOrWasm<Wasm> {
     Wasm(Wasm),
 }
 
-/// Core IP Set struct
+/// DAO IP Set struct
 #[derive(Encode, Decode, Clone, Eq, PartialEq, MaxEncodedLen, Debug, TypeInfo)]
-pub struct CoreInfo<AccountId, CoreMetadataOf> {
+pub struct DaoInfo<AccountId, DaoMetadataOf> {
     /// IPS parentage
     pub account: AccountId,
     /// IPS metadata
-    pub metadata: CoreMetadataOf,
+    pub metadata: DaoMetadataOf,
 
     /// Aye vote percentage required to execute a multisig call.
     ///

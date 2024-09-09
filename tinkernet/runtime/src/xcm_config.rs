@@ -21,7 +21,7 @@ use orml_traits::{
 pub use orml_xcm_support::{
     DepositToAlternative, IsNativeConcrete, MultiCurrencyAdapter, MultiNativeAsset,
 };
-use pallet_ocif_staking::primitives::{
+use pallet_dao_staking::primitives::{
     CustomAggregateMessageOrigin, CustomMessageProcessor, CustomNarrowOriginToSibling,
     CustomParaIdToSibling,
 };

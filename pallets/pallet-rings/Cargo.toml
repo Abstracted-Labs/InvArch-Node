@@ -1,50 +1,50 @@
 [package]
 name = 'pallet-rings'
-authors = ['InvArchitects <https://github.com/InvArch>']
 description = ''
-edition = '2021'
-homepage = 'https://invarch.network'
-license = 'GPLv3'
-repository = 'https://github.com/InvArch/InvArch-Frames/'
-version = '0.1.0-dev'
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+version.workspace = true
 
 [package.metadata.docs.rs]
 targets = ["x86_64-unknown-linux-gnu"]
 
 [dependencies]
-log = {workspace = true, default-features = false}
-codec = {workspace = true, default-features = false}
-scale-info = {workspace = true, default-features = false}
-serde = {workspace = true, optional = true}
+log = { workspace = true }
+codec = { workspace = true }
+scale-info = { workspace = true }
+serde = { workspace = true, optional = true }
 
-frame-support = {workspace = true, default-features = false}
-frame-system = {workspace = true, default-features = false}
-num-traits = {workspace = true, default-features = false}
-pallet-balances = {workspace = true, default-features = false}
-pallet-session = {workspace = true, default-features = false}
-pallet-timestamp = { workspace = true, default-features = false, optional = true }
-sp-arithmetic = {workspace = true, default-features = false}
-sp-core = {workspace = true, default-features = false}
-sp-io = {workspace = true, default-features = false}
+frame-support = { workspace = true }
+frame-system = { workspace = true }
+num-traits = { workspace = true }
+pallet-balances = { workspace = true }
+pallet-session = { workspace = true }
+pallet-timestamp = { workspace = true, optional = true }
+sp-arithmetic = { workspace = true }
+sp-core = { workspace = true }
+sp-io = { workspace = true }
 sp-runtime = {workspace = true}
 sp-staking = {workspace = true}
 sp-std = {workspace = true}
 
-pallet-inv4 = { path = "../INV4/pallet-inv4", default-features = false }
+pallet-dao-manager = { workspace = true }
 
-pallet-xcm = {workspace = true, default-features = false}
-xcm = {workspace = true, default-features = false}
-xcm-executor = {workspace = true, default-features = false}
+pallet-xcm = { workspace = true }
+xcm = { workspace = true }
+xcm-executor = { workspace = true }
 
-frame-benchmarking = {workspace = true, default-features = false, optional = true}
+frame-benchmarking = { workspace = true, optional = true }
 
 [dev-dependencies]
-orml-traits = { workspace = true, default-features = false}
-orml-traits2 = { workspace = true, default-features = false}
-orml-tokens = { workspace = true, default-features = false}
-orml-tokens2 = { workspace = true, default-features = false}
-orml-asset-registry = { workspace = true, default-features = false}
-xcm-builder = {workspace = true, default-features = false}
+orml-traits = { workspace = true }
+orml-traits2 = { workspace = true }
+orml-tokens = { workspace = true }
+orml-tokens2 = { workspace = true }
+orml-asset-registry = { workspace = true }
+xcm-builder = { workspace = true }
 
 
 [features]
@@ -65,7 +65,7 @@ std = [
 	"pallet-session/std",
 	"pallet-timestamp/std",
 	"sp-staking/std",
-  "pallet-inv4/std",
+  "pallet-dao-manager/std",
   "pallet-xcm/std",
   "xcm/std",
   "orml-traits2/std",
@@ -80,7 +80,7 @@ runtime-benchmarks = [
 	"frame-benchmarking/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
 	"frame-system/runtime-benchmarks",
-	"pallet-inv4/runtime-benchmarks",
+	"pallet-dao-manager/runtime-benchmarks",
 	"pallet-xcm/runtime-benchmarks",
 	"xcm-builder/runtime-benchmarks",
 ]

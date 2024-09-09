@@ -1,4 +1,4 @@
-// Copyright 2021-2022 InvArch Association.
+// Copyright 2021-2024 Abstracted Labs.
 // This file is part of InvArch.
 
 // InvArch is free software: you can redistribute it and/or modify
@@ -53,8 +53,8 @@ use frame_system::{
     limits::{BlockLength, BlockWeights},
     EnsureRoot,
 };
+use pallet_dao_manager::{origin::DaoOrigin, DaoLookup};
 use pallet_identity::legacy::IdentityInfo;
-use pallet_inv4::{origin::INV4Origin, INV4Lookup};
 use pallet_transaction_payment::{FeeDetails, InclusionFee, Multiplier};
 use polkadot_runtime_common::SlowAdjustingFeeUpdate;
 use smallvec::smallvec;
@@ -102,8 +102,8 @@ use common_types::*;
 mod assets;
 mod fee_handling;
 use fee_handling::TnkrToKsm;
+mod dao_manager;
 mod inflation;
-mod inv4;
 // mod migrations;
 mod nft;
 mod rings;
@@ -184,7 +184,7 @@ pub type Executive = frame_executive::Executive<
 /// Opaque types. These are used by the CLI to instantiate machinery that don't need to know
 /// the specifics of the runtime. They can then be made to be agnostic over specific formats
 /// of data like extrinsics, allowing for them to continue syncing the network through upgrades
-/// to even the core data structures.
+/// to even the dao data structures.
 pub mod opaque {
     use super::*;
     use sp_runtime::{
@@ -310,9 +310,7 @@ impl Contains<RuntimeCall> for MaintenanceFilter {
     fn contains(c: &RuntimeCall) -> bool {
         !matches!(c, |RuntimeCall::XTokens(_)| RuntimeCall::PolkadotXcm(_)
             | RuntimeCall::OrmlXcm(_)
-            | RuntimeCall::OcifStaking(
-                pallet_ocif_staking::Call::stake { .. }
-            ))
+            | RuntimeCall::OcifStaking(pallet_dao_staking::Call::stake { .. }))
     }
 }
 
@@ -384,7 +382,7 @@ impl frame_system::Config for Runtime {
     /// The aggregated dispatch type that is available for extrinsics.
     type RuntimeCall = RuntimeCall;
     /// The lookup mechanism to get account ID from whatever is passed in dispatchers.
-    type Lookup = INV4Lookup<Runtime>;
+    type Lookup = DaoLookup<Runtime>;
     /// The index type for storing how many extrinsics an account has signed.
     type Nonce = Nonce;
     /// The type for hashing blocks and tries.
@@ -836,7 +834,7 @@ impl From<RuntimeOrigin> for Result<frame_system::RawOrigin<AccountId>, RuntimeO
     fn from(val: RuntimeOrigin) -> Self {
         match val.caller {
             OriginCaller::system(l) => Ok(l),
-            OriginCaller::INV4(INV4Origin::Multisig(l)) => {
+            OriginCaller::INV4(DaoOrigin::Multisig(l)) => {
                 Ok(frame_system::RawOrigin::Signed(l.to_account_id()))
             }
             _ => Err(val),
@@ -886,9 +884,9 @@ construct_runtime_modified!(
 
         // InvArch stuff
         CheckedInflation: pallet_checked_inflation = 50,
-        OcifStaking: pallet_ocif_staking = 51,
+        OcifStaking: pallet_dao_staking = 51,
 
-        INV4: pallet_inv4 = 71,
+        INV4: pallet_dao_manager = 71,
         CoreAssets: orml_tokens2 = 72,
         Rings: pallet_rings = 73,
 
@@ -913,8 +911,8 @@ mod benches {
         [pallet_timestamp, Timestamp]
         [pallet_collator_selection, CollatorSelection]
         [cumulus_pallet_xcmp_queue, XcmpQueue]
-        [pallet_inv4, INV4]
-        [pallet_ocif_staking, OcifStaking]
+        [pallet_dao_manager, INV4]
+        [pallet_dao_staking, OcifStaking]
         [pallet_checked_inflation, CheckedInflation]
     );
 }

@@ -74,13 +74,13 @@ pub fn _child_account_account_id(
     relay_chain::LocationToAccountId::convert_location(&MultiLocation::from(location)).unwrap()
 }
 
-pub fn sibling_core_account_id(core: u32) -> parachain::AccountId {
+pub fn sibling_dao_account_id(dao: u32) -> parachain::AccountId {
     let location = MultiLocation {
         parents: 1,
         interior: Junctions::X2(
             Parachain(2125),
             Plurality {
-                id: BodyId::Index(core),
+                id: BodyId::Index(dao),
                 part: BodyPart::Voice,
             },
         ),
@@ -197,10 +197,10 @@ mod tests {
 
         Tinkernet::execute_with(|| {
             assert_eq!(
-                <parachain::INV4 as pallet_inv4::CoreAccountDerivation<
+                <parachain::INV4 as pallet_dao_manager::DaoAccountDerivation<
                     parachain::Runtime,
-                >>::derive_core_account(0),
-                sibling_core_account_id(0)
+                >>::derive_dao_account(0),
+                sibling_dao_account_id(0)
             );
         });
     }
@@ -210,13 +210,15 @@ mod tests {
         MockNet::reset();
 
         Tinkernet::execute_with(|| {
-            log::trace!(target: "xcm::CoreAccount", "CoreAccount: account: {:?}", <parachain::INV4 as pallet_inv4::CoreAccountDerivation<
+            log::trace!(target: "xcm::DaoAccount", "DaoAccount: account: {:?}", <parachain::INV4 as pallet_dao_manager::DaoAccountDerivation<
                     parachain::Runtime,
-                >>::derive_core_account(0));
+                >>::derive_dao_account(0));
 
             assert_ok!(parachain::Rings::transfer_assets(
-                pallet_inv4::Origin::<parachain::Runtime>::Multisig(
-                    pallet_inv4::origin::MultisigInternalOrigin::<parachain::Runtime>::new(0)
+                pallet_dao_manager::Origin::<parachain::Runtime>::Multisig(
+                    pallet_dao_manager::origin::MultisigInternalOrigin::<parachain::Runtime>::new(
+                        0
+                    )
                 )
                 .into(),
                 ChainList::get_main_asset(&crate::rings::Chains::AssetHub),

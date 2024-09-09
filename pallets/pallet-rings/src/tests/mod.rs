@@ -4,7 +4,7 @@ use crate::{traits::*, Error};
 use frame_support::{assert_err, assert_ok, error::BadOrigin};
 use frame_system::RawOrigin;
 use mock::*;
-use pallet_inv4::{origin::MultisigInternalOrigin, Origin};
+use pallet_dao_manager::{origin::MultisigInternalOrigin, Origin};
 use sp_std::vec;
 use xcm::latest::{BodyId, BodyPart, Junction, Junctions, MultiLocation, Weight};
 
@@ -245,7 +245,7 @@ fn mutate_location_if_dest_is_relay() {
     let relay_dest = Chains::Relay.get_location();
     let para_dest = Chains::ChainA.get_location();
 
-    let mut core_multilocation = MultiLocation {
+    let mut dao_multilocation = MultiLocation {
         parents: 1,
         interior: Junctions::X2(
             Junction::Parachain(2125),
@@ -256,10 +256,10 @@ fn mutate_location_if_dest_is_relay() {
         ),
     };
 
-    crate::pallet::mutate_if_relay(&mut core_multilocation, &para_dest);
+    crate::pallet::mutate_if_relay(&mut dao_multilocation, &para_dest);
 
     assert_eq!(
-        core_multilocation,
+        dao_multilocation,
         MultiLocation {
             parents: 1,
             interior: Junctions::X2(
@@ -272,10 +272,10 @@ fn mutate_location_if_dest_is_relay() {
         }
     );
 
-    crate::pallet::mutate_if_relay(&mut core_multilocation, &relay_dest);
+    crate::pallet::mutate_if_relay(&mut dao_multilocation, &relay_dest);
 
     assert_eq!(
-        core_multilocation,
+        dao_multilocation,
         MultiLocation {
             parents: 0,
             interior: Junctions::X2(

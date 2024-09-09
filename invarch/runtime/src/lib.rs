@@ -41,8 +41,8 @@ pub use sp_runtime::BuildStorage;
 mod assets;
 pub mod balances;
 mod common_types;
+mod dao_manager;
 mod inflation;
-mod inv4;
 mod staking;
 mod weights;
 pub mod xcm_config;
@@ -116,7 +116,7 @@ pub type Executive = frame_executive::Executive<
 /// Opaque types. These are used by the CLI to instantiate machinery that don't need to know
 /// the specifics of the runtime. They can then be made to be agnostic over specific formats
 /// of data like extrinsics, allowing for them to continue syncing the network through upgrades
-/// to even the core data structures.
+/// to even the dao data structures.
 pub mod opaque {
     use super::*;
     use sp_runtime::{generic, traits::BlakeTwo256};
@@ -448,7 +448,7 @@ impl From<RuntimeOrigin> for Result<frame_system::RawOrigin<AccountId>, RuntimeO
     fn from(val: RuntimeOrigin) -> Self {
         match val.caller {
             OriginCaller::system(l) => Ok(l),
-            OriginCaller::INV4(pallet_inv4::origin::INV4Origin::Multisig(l)) => {
+            OriginCaller::INV4(pallet_dao_manager::origin::DaoOrigin::Multisig(l)) => {
                 Ok(frame_system::RawOrigin::Signed(l.to_account_id()))
             }
             _ => Err(val),
@@ -494,9 +494,9 @@ construct_runtime_modified!(
         Identity: pallet_identity = 40,
 
         CheckedInflation: pallet_checked_inflation= 50,
-        OcifStaking: pallet_ocif_staking = 51,
+        OcifStaking: pallet_dao_staking = 51,
 
-        INV4: pallet_inv4 = 71,
+        INV4: pallet_dao_manager = 71,
         CoreAssets: orml_tokens = 72,
         // 73 reserved for pallet-rings
 

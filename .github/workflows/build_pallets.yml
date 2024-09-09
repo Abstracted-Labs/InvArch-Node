@@ -1,0 +1,59 @@
+name: Pallets Checks
+
+on:
+  push:
+    branches: [ main, development ]
+  pull_request:
+    branches: [ main, development ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./pallets
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install & display rust toolchain
+      run: rustup show
+    - name: Build
+      run: cargo build --verbose
+
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./pallets
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install & display rust toolchain
+      run: rustup show
+    - name: Run tests
+      run: cargo test --verbose
+
+  clippy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./pallets
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install & display rust toolchain
+        run: rustup show
+      - name: Run clippy
+        run: cargo clippy -- -D warnings
+
+  fmt:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./pallets
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install & display rust toolchain
+        run: rustup show
+      - name: Run cargofmt
+        run: cargo fmt --all -- --check

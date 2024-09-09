@@ -9,7 +9,7 @@ use frame_support::{
     traits::{EnqueueWithOrigin, Everything, Nothing, TransformOrigin},
 };
 use frame_system::EnsureRoot;
-use pallet_ocif_staking::primitives::{
+use pallet_dao_staking::primitives::{
     CustomAggregateMessageOrigin, CustomMessageProcessor, CustomNarrowOriginToSibling,
     CustomParaIdToSibling,
 };

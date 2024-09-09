@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Rings pallet provides a cross-consensus message (XCM) abstraction layer for INV4 Cores, enabling them to manage assets effortlessly across multiple chains. It abstracts XCM complexities, facilitating easier handling of cross-chain transactions.
+The Rings pallet provides a cross-consensus message (XCM) abstraction layer for DAO Management, enabling them to manage assets effortlessly across multiple chains. It abstracts XCM complexities, facilitating easier handling of cross-chain transactions.
 
 ## Key Features
 
@@ -29,7 +29,7 @@ Sets the maintenance status of a chain. Requires `MaintenanceOrigin` authorizati
 
 ### `send_call`
 
-Allows sending a XCM call to another chain. Can be initiated by a core.
+Allows sending a XCM call to another chain. Can be initiated by a DAO.
 
 - `destination`: The target chain.
 - `weight`: The call's weight.
@@ -50,13 +50,13 @@ Allows transfers of fungible assets to another account in the destination chain.
 
 ### `bridge_assets`
 
-Allows bridging of assets to another chain, with either the core account or a third-party account as the beneficiary.
+Allows bridging of assets to another chain, with either the DAO account or a third-party account as the beneficiary.
 
-- `asset`: The asset to bridge and it's origin chain.
+- `asset`: The asset to bridge and its origin chain.
 - `destination`: The destination chain.
 - `fee`: The bridging fee.
 - `amount`: The amount to bridge.
-- `to`: Optional beneficiary account on the destination chain. (Defaults to the core account)
+- `to`: Optional beneficiary account on the destination chain. (Defaults to the DAO account)
 
 ## Events
 

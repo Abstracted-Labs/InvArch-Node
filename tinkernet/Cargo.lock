@@ -6077,7 +6077,7 @@ dependencies = [
 [[package]]
 name = "orml-asset-registry"
 version = "0.7.1"
-source = "git+https://github.com/InvArch/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
+source = "git+https://github.com/Abstracted-Labs/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6099,7 +6099,7 @@ dependencies = [
 [[package]]
 name = "orml-currencies"
 version = "0.7.1"
-source = "git+https://github.com/InvArch/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
+source = "git+https://github.com/Abstracted-Labs/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6133,7 +6133,7 @@ dependencies = [
 [[package]]
 name = "orml-tokens"
 version = "0.7.1"
-source = "git+https://github.com/InvArch/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
+source = "git+https://github.com/Abstracted-Labs/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6170,7 +6170,7 @@ dependencies = [
 [[package]]
 name = "orml-traits"
 version = "0.7.1"
-source = "git+https://github.com/InvArch/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
+source = "git+https://github.com/Abstracted-Labs/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
 dependencies = [
  "frame-support",
  "impl-trait-for-tuples",
@@ -6190,7 +6190,7 @@ dependencies = [
 [[package]]
 name = "orml-unknown-tokens"
 version = "0.7.1"
-source = "git+https://github.com/InvArch/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
+source = "git+https://github.com/Abstracted-Labs/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6220,7 +6220,7 @@ dependencies = [
 [[package]]
 name = "orml-utilities"
 version = "0.7.1"
-source = "git+https://github.com/InvArch/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
+source = "git+https://github.com/Abstracted-Labs/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
 dependencies = [
  "frame-support",
  "parity-scale-codec",
@@ -6235,7 +6235,7 @@ dependencies = [
 [[package]]
 name = "orml-vesting"
 version = "0.7.1"
-source = "git+https://github.com/InvArch/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
+source = "git+https://github.com/Abstracted-Labs/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6250,7 +6250,7 @@ dependencies = [
 [[package]]
 name = "orml-xcm"
 version = "0.7.1"
-source = "git+https://github.com/InvArch/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
+source = "git+https://github.com/Abstracted-Labs/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6264,7 +6264,7 @@ dependencies = [
 [[package]]
 name = "orml-xcm-support"
 version = "0.7.1"
-source = "git+https://github.com/InvArch/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
+source = "git+https://github.com/Abstracted-Labs/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
 dependencies = [
  "frame-support",
  "orml-traits 0.7.1",
@@ -6278,7 +6278,7 @@ dependencies = [
 [[package]]
 name = "orml-xtokens"
 version = "0.7.1"
-source = "git+https://github.com/InvArch/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
+source = "git+https://github.com/Abstracted-Labs/open-runtime-module-library.git?branch=polkadot-v1.6.0#74a0efb69072bd3e9263c2e56bb1adc11945c3da"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6632,6 +6632,55 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-dao-manager"
+version = "0.1.0-dev"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "invarch-primitives",
+ "log",
+ "orml-tokens 0.7.0",
+ "pallet-balances",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "smallvec",
+ "sp-api",
+ "sp-arithmetic",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std 8.0.0",
+ "staging-xcm",
+]
+
+[[package]]
+name = "pallet-dao-staking"
+version = "0.1.0-dev"
+dependencies = [
+ "cumulus-primitives-core",
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "num-traits",
+ "pallet-balances",
+ "pallet-dao-manager",
+ "pallet-message-queue",
+ "pallet-session",
+ "pallet-timestamp",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "sp-arithmetic",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-staking",
+ "sp-std 8.0.0",
+]
+
+[[package]]
 name = "pallet-democracy"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/polkadot-sdk.git?branch=release-polkadot-v1.6.0#f00a911c52c047db3119dedfddc86c332ff6626b"
@@ -6802,30 +6851,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "pallet-inv4"
-version = "0.1.0-dev"
-dependencies = [
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "invarch-primitives",
- "log",
- "orml-tokens 0.7.0",
- "pallet-balances",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "smallvec",
- "sp-api",
- "sp-arithmetic",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std 8.0.0",
- "staging-xcm",
-]
-
-[[package]]
 name = "pallet-maintenance-mode"
 version = "0.1.0"
 source = "git+https://github.com/Moonsong-Labs/moonkit?rev=c6ed5d19a90ef175e8464d026cd40a4e0891b926#c6ed5d19a90ef175e8464d026cd40a4e0891b926"
@@ -6979,31 +7004,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "pallet-ocif-staking"
-version = "0.1.0-dev"
-dependencies = [
- "cumulus-primitives-core",
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "num-traits",
- "pallet-balances",
- "pallet-inv4",
- "pallet-message-queue",
- "pallet-session",
- "pallet-timestamp",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "sp-arithmetic",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-staking",
- "sp-std 8.0.0",
-]
-
-[[package]]
 name = "pallet-offences"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/polkadot-sdk.git?branch=release-polkadot-v1.6.0#f00a911c52c047db3119dedfddc86c332ff6626b"
@@ -7138,7 +7138,7 @@ dependencies = [
  "log",
  "num-traits",
  "pallet-balances",
- "pallet-inv4",
+ "pallet-dao-manager",
  "pallet-session",
  "pallet-timestamp",
  "pallet-xcm",
@@ -13384,12 +13384,12 @@ dependencies = [
  "pallet-balances",
  "pallet-checked-inflation",
  "pallet-collator-selection",
+ "pallet-dao-manager",
+ "pallet-dao-staking",
  "pallet-identity",
- "pallet-inv4",
  "pallet-maintenance-mode",
  "pallet-message-queue",
  "pallet-multisig",
- "pallet-ocif-staking",
  "pallet-preimage",
  "pallet-rings",
  "pallet-scheduler",
